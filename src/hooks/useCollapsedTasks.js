@@ -1,7 +1,9 @@
 import { supabase } from '../data/supabaseClient'
 import { upsertUiState } from '../data/supabaseApi'
 
-const KEY = 'vic-rod-tasks-app-collapsed-tasks'
+// Stores IDs of tasks the user has manually expanded.
+// Default is collapsed; a task not in this set is treated as collapsed.
+const KEY = 'vic-rod-tasks-app-expanded-tasks'
 
 function readIds() {
   try {
@@ -18,25 +20,25 @@ function writeIds(set) {
   } catch {}
 }
 
+// Returns true when the task is collapsed (not in the expanded set).
 export function isTaskCollapsed(taskId) {
-  return readIds().has(taskId)
+  return !readIds().has(taskId)
 }
 
-// Called during initial Supabase load to restore cloud collapsed state to localStorage.
-export function restoreCollapsedTaskIds(ids) {
+// Called during initial Supabase load to restore expanded task IDs to localStorage.
+export function restoreExpandedTaskIds(ids) {
   writeIds(new Set(ids))
 }
 
 export function setTaskCollapsed(taskId, shouldBeCollapsed) {
   const ids = readIds()
   if (shouldBeCollapsed) {
-    ids.add(taskId)
+    ids.delete(taskId)  // not in expanded set → collapsed
   } else {
-    ids.delete(taskId)
+    ids.add(taskId)     // in expanded set → expanded
   }
   writeIds(ids)
 
-  // Sync to Supabase — uses the singleton client to get the current session without prop drilling
   supabase.auth.getSession().then(({ data: { session } }) => {
     if (session) {
       upsertUiState(session.user.id, { collapsedTaskIds: [...ids] }).catch(console.error)

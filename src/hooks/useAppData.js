@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { loadData } from '../data/storage'
 import { generateId } from '../data/schema'
 import * as api from '../data/supabaseApi'
-import { restoreCollapsedTaskIds } from './useCollapsedTasks'
+import { restoreExpandedTaskIds } from './useCollapsedTasks'
 
 function now() { return new Date().toISOString() }
 
@@ -37,10 +37,10 @@ export function useAppData(userId) {
         if (cancelled) return
         setData({ projects, tasks })
         setUiState(loadedUiState)
-        // Write cloud collapsed IDs to localStorage so TaskCards read the correct initial state.
-        // This only touches the collapsed-IDs key, not the task/project data key.
+        // Write cloud expanded IDs to localStorage so TaskCards read the correct initial state.
+        // This only touches the expanded-IDs key, not the task/project data key.
         if (loadedUiState?.collapsedTaskIds) {
-          restoreCollapsedTaskIds(loadedUiState.collapsedTaskIds)
+          restoreExpandedTaskIds(loadedUiState.collapsedTaskIds)
         }
       } catch (err) {
         if (cancelled) return
