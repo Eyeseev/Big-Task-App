@@ -5,10 +5,28 @@
 .groupHeader {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.5rem 0 0.5rem 0.625rem;
+  gap: 0.5rem;
+  padding: 0.5rem 0 0.5rem 0.25rem;
   border-left: 4px solid #e4e4e7;
   margin-bottom: 0.75rem;
+}
+
+.collapseBtn {
+  background: none;
+  border: none;
+  padding: 0.125rem 0.25rem;
+  font-size: 0.6875rem;
+  color: #a1a1aa;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition: color 0.1s, background 0.1s;
+}
+
+.collapseBtn:hover {
+  color: #3f3f46;
+  background: #f4f4f5;
 }
 
 .unassigned {

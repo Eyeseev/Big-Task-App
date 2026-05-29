@@ -7,10 +7,41 @@ import { ProjectForm } from '../components/ProjectForm'
 import { sortTasks } from '../data/schema'
 import styles from './ProjectsView.module.css'
 
+const COLLAPSED_PROJECTS_KEY = 'vic-rod-tasks-app-collapsed-projects'
+
+function readCollapsedProjects() {
+  try {
+    const raw = localStorage.getItem(COLLAPSED_PROJECTS_KEY)
+    return raw ? new Set(JSON.parse(raw)) : new Set()
+  } catch {
+    return new Set()
+  }
+}
+
+function writeCollapsedProjects(set) {
+  try {
+    localStorage.setItem(COLLAPSED_PROJECTS_KEY, JSON.stringify([...set]))
+  } catch {}
+}
+
 export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask, toggleComplete, addProject, updateProject, deleteProject, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask }) {
   const [showCompleted, setShowCompleted] = useState(false)
-  const [taskModal, setTaskModal] = useState(null)      // null | {projectId, status} | task-object
-  const [editingProject, setEditingProject] = useState(null)  // null | {} | project-object
+  const [taskModal, setTaskModal] = useState(null)
+  const [editingProject, setEditingProject] = useState(null)
+  const [collapsedProjects, setCollapsedProjects] = useState(readCollapsedProjects)
+
+  function toggleProjectCollapsed(key) {
+    setCollapsedProjects(prev => {
+      const next = new Set(prev)
+      if (next.has(key)) {
+        next.delete(key)
+      } else {
+        next.add(key)
+      }
+      writeCollapsedProjects(next)
+      return next
+    })
+  }
 
   // --- Task handlers ---
   function openAddTask(projectId) {
@@ -85,10 +116,18 @@ export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask,
           const _active = sortTasks(_all.filter(t => !t.completed))
           const _completed = sortTasks(_all.filter(t => t.completed))
           const projectTasks = showCompleted ? [..._active, ..._completed] : _active
+          const isCollapsed = collapsedProjects.has(project.id)
 
           return (
             <div key={project.id} className={styles.group}>
               <div className={styles.groupHeader} style={{ borderLeftColor: project.color }}>
+                <button
+                  className={styles.collapseBtn}
+                  onClick={() => toggleProjectCollapsed(project.id)}
+                  aria-label={isCollapsed ? `Expand ${project.name}` : `Collapse ${project.name}`}
+                >
+                  {isCollapsed ? '▸' : '▾'}
+                </button>
                 <span className={styles.groupName}>{project.name}</span>
                 <div className={styles.groupActions}>
                   {_all.length > 0 && (
@@ -123,75 +162,91 @@ export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask,
                 </div>
               </div>
 
-              {_all.length === 0 ? (
-                <p className={styles.empty}>No tasks yet.</p>
-              ) : projectTasks.length === 0 ? (
-                <p className={styles.empty}>All done for now.</p>
-              ) : (
-                projectTasks.map(task => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    project={project}
-                    showStatus
-                    onToggleComplete={() => toggleComplete(task.id)}
-                    onEdit={() => openEditTask(task)}
-                    onDelete={() => handleDeleteTask(task.id)}
-                    onAddSubtask={(text) => addSubtask(task.id, text)}
-                    onDeleteSubtask={(subId) => deleteSubtask(task.id, subId)}
-                    onToggleSubtaskComplete={(subId) => toggleSubtaskComplete(task.id, subId)}
-                    onPromoteSubtask={(subId) => promoteSubtask(task.id, subId)}
-                  />
-                ))
+              {!isCollapsed && (
+                _all.length === 0 ? (
+                  <p className={styles.empty}>No tasks yet.</p>
+                ) : projectTasks.length === 0 ? (
+                  <p className={styles.empty}>All done for now.</p>
+                ) : (
+                  projectTasks.map(task => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      project={project}
+                      showStatus
+                      onToggleComplete={() => toggleComplete(task.id)}
+                      onEdit={() => openEditTask(task)}
+                      onDelete={() => handleDeleteTask(task.id)}
+                      onAddSubtask={(text) => addSubtask(task.id, text)}
+                      onDeleteSubtask={(subId) => deleteSubtask(task.id, subId)}
+                      onToggleSubtaskComplete={(subId) => toggleSubtaskComplete(task.id, subId)}
+                      onPromoteSubtask={(subId) => promoteSubtask(task.id, subId)}
+                    />
+                  ))
+                )
               )}
             </div>
           )
         })}
 
-        {/* Unassigned group — always visible so + Add is always accessible */}
-        <div className={styles.group}>
-          <div className={`${styles.groupHeader} ${styles.unassigned}`}>
-            <span className={styles.groupName}>Unassigned</span>
-            <div className={styles.groupActions}>
-              {_allUnassigned.length > 0 && (
-                <span className={styles.groupCount}>
-                  {_unassignedActive.length}
-                  {showCompleted && _unassignedCompleted.length > 0 && (
-                    <span className={styles.completedCount}> · {_unassignedCompleted.length} done</span>
+        {/* Unassigned group */}
+        {(() => {
+          const isCollapsed = collapsedProjects.has('unassigned')
+          return (
+            <div className={styles.group}>
+              <div className={`${styles.groupHeader} ${styles.unassigned}`}>
+                <button
+                  className={styles.collapseBtn}
+                  onClick={() => toggleProjectCollapsed('unassigned')}
+                  aria-label={isCollapsed ? 'Expand Unassigned' : 'Collapse Unassigned'}
+                >
+                  {isCollapsed ? '▸' : '▾'}
+                </button>
+                <span className={styles.groupName}>Unassigned</span>
+                <div className={styles.groupActions}>
+                  {_allUnassigned.length > 0 && (
+                    <span className={styles.groupCount}>
+                      {_unassignedActive.length}
+                      {showCompleted && _unassignedCompleted.length > 0 && (
+                        <span className={styles.completedCount}> · {_unassignedCompleted.length} done</span>
+                      )}
+                    </span>
                   )}
-                </span>
+                  <button
+                    className={styles.addTaskBtn}
+                    onClick={() => openAddTask(null)}
+                    aria-label="Add unassigned task"
+                  >
+                    + Add
+                  </button>
+                </div>
+              </div>
+              {!isCollapsed && (
+                _allUnassigned.length === 0 ? (
+                  <p className={styles.empty}>No unassigned tasks.</p>
+                ) : unassigned.length === 0 ? (
+                  <p className={styles.empty}>All done for now.</p>
+                ) : (
+                  unassigned.map(task => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      project={null}
+                      showStatus
+                      onToggleComplete={() => toggleComplete(task.id)}
+                      onEdit={() => openEditTask(task)}
+                      onDelete={() => handleDeleteTask(task.id)}
+                      onAddSubtask={(text) => addSubtask(task.id, text)}
+                      onDeleteSubtask={(subId) => deleteSubtask(task.id, subId)}
+                      onToggleSubtaskComplete={(subId) => toggleSubtaskComplete(task.id, subId)}
+                      onPromoteSubtask={(subId) => promoteSubtask(task.id, subId)}
+                    />
+                  ))
+                )
               )}
-              <button
-                className={styles.addTaskBtn}
-                onClick={() => openAddTask(null)}
-                aria-label="Add unassigned task"
-              >
-                + Add
-              </button>
             </div>
-          </div>
-          {_allUnassigned.length === 0 ? (
-            <p className={styles.empty}>No unassigned tasks.</p>
-          ) : unassigned.length === 0 ? (
-            <p className={styles.empty}>All done for now.</p>
-          ) : (
-            unassigned.map(task => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                project={null}
-                showStatus
-                onToggleComplete={() => toggleComplete(task.id)}
-                onEdit={() => openEditTask(task)}
-                onDelete={() => handleDeleteTask(task.id)}
-                onAddSubtask={(text) => addSubtask(task.id, text)}
-                onDeleteSubtask={(subId) => deleteSubtask(task.id, subId)}
-                onToggleSubtaskComplete={(subId) => toggleSubtaskComplete(task.id, subId)}
-                onPromoteSubtask={(subId) => promoteSubtask(task.id, subId)}
-              />
-            ))
-          )}
-        </div>
+          )
+        })()}
       </ViewShell>
 
       {taskModal !== null && (
