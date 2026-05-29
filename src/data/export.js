@@ -1,13 +1,12 @@
-const STATUS_ORDER = ['capture', 'today', 'next', 'waiting', 'someday', 'backlog', 'app_ideas']
+const STATUS_ORDER = ['capture', 'today', 'next', 'waiting', 'someday', 'backlog']
 
 const STATUS_LABELS = {
-  capture:   'Capture',
-  today:     'Today',
-  next:      'Next',
-  waiting:   'Waiting',
-  someday:   'Someday',
-  backlog:   'Later',
-  app_ideas: 'App Ideas',
+  capture: 'Capture',
+  today:   'Today',
+  next:    'Next',
+  waiting: 'Waiting',
+  someday: 'Someday',
+  backlog: 'Later',
 }
 
 function cap(s) {

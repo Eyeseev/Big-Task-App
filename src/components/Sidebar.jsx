@@ -11,8 +11,6 @@ const STATUS_NAV_ITEMS = [
   { id: 'someday',   label: 'Someday' },
 ]
 
-const APP_IDEAS_ITEM = { id: 'app_ideas', label: 'App Ideas' }
-
 function StatusNavItem({ item, active, onViewChange }) {
   const { setNodeRef, isOver } = useDroppable({
     id: `status-${item.id}`,
@@ -111,11 +109,6 @@ export function Sidebar({ activeView, onViewChange, projects = [], onExport, isO
               <UnassignedNavItem onViewChange={onViewChange} />
             </ul>
           </li>
-          <StatusNavItem
-            item={APP_IDEAS_ITEM}
-            active={activeView === 'app_ideas'}
-            onViewChange={onViewChange}
-          />
         </ul>
         <div className={styles.footer}>
           {onExport && (

@@ -161,7 +161,7 @@ export async function fetchUiState(userId) {
 // ---- import ----
 
 const VALID_PRIORITIES = new Set(['high', 'medium', 'low'])
-const VALID_STATUSES = new Set(['today', 'next', 'waiting', 'someday', 'backlog', 'capture', 'app_ideas'])
+const VALID_STATUSES = new Set(['capture', 'today', 'next', 'waiting', 'someday', 'backlog'])
 
 export async function importLocalData(userId, localData) {
   const localProjects = localData.projects ?? []

@@ -7,13 +7,12 @@ import { TaskForm } from './TaskForm'
 import { sortTasks } from '../data/schema'
 
 const EMPTY_MESSAGES = {
-  capture:   'Nothing captured yet.',
-  today:     'Nothing due today.',
-  next:      'No next tasks.',
-  waiting:   'Nothing waiting right now.',
-  someday:   'No someday ideas yet.',
-  backlog:   'Nothing parked for later.',
-  app_ideas: 'No app ideas yet.',
+  capture: 'Nothing captured yet.',
+  today:   'Nothing due today.',
+  next:    'No next tasks.',
+  waiting: 'Nothing waiting right now.',
+  someday: 'No someday ideas yet.',
+  backlog: 'Nothing parked for later.',
 }
 
 export function StatusView({ status, title, tasks, projects, addTask, updateTask, deleteTask, toggleComplete, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask }) {

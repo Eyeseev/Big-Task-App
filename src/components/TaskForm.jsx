@@ -8,13 +8,12 @@ const PRIORITIES = [
 ]
 
 const STATUSES = [
-  { value: 'capture',   label: 'Capture' },
-  { value: 'today',     label: 'Today' },
-  { value: 'next',      label: 'Next' },
-  { value: 'waiting',   label: 'Waiting' },
-  { value: 'someday',   label: 'Someday' },
-  { value: 'backlog',   label: 'Later' },
-  { value: 'app_ideas', label: 'App Ideas' },
+  { value: 'capture', label: 'Capture' },
+  { value: 'today',   label: 'Today' },
+  { value: 'next',    label: 'Next' },
+  { value: 'waiting', label: 'Waiting' },
+  { value: 'someday', label: 'Someday' },
+  { value: 'backlog', label: 'Later' },
 ]
 
 export function TaskForm({ initialValues, onSubmit, onCancel, projects = [] }) {
