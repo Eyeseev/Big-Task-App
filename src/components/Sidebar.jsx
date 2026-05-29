@@ -30,7 +30,7 @@ function StatusNavItem({ item, active, onViewChange }) {
   )
 }
 
-function ProjectNavItem({ project, onViewChange, utility = false }) {
+function ProjectNavItem({ project, onProjectJump, utility = false }) {
   const { setNodeRef, isOver } = useDroppable({
     id: `project-${project.id}`,
     data: { type: 'project', projectId: project.id },
@@ -41,7 +41,7 @@ function ProjectNavItem({ project, onViewChange, utility = false }) {
       <button
         ref={setNodeRef}
         className={`${styles.projectBtn} ${utility ? styles.utilityProjectBtn : ''} ${isOver ? styles.projectDropTarget : ''}`}
-        onClick={() => onViewChange('projects')}
+        onClick={() => onProjectJump(project.id)}
         title={project.name}
       >
         <span
@@ -54,7 +54,7 @@ function ProjectNavItem({ project, onViewChange, utility = false }) {
   )
 }
 
-function UnassignedNavItem({ onViewChange }) {
+function UnassignedNavItem({ onProjectJump }) {
   const { setNodeRef, isOver } = useDroppable({
     id: 'project-unassigned',
     data: { type: 'project', projectId: null },
@@ -65,7 +65,7 @@ function UnassignedNavItem({ onViewChange }) {
       <button
         ref={setNodeRef}
         className={`${styles.projectBtn} ${styles.unassignedBtn} ${isOver ? styles.projectDropTarget : ''}`}
-        onClick={() => onViewChange('projects')}
+        onClick={() => onProjectJump('unassigned')}
       >
         <span className={`${styles.projectDot} ${styles.unassignedDot}`} />
         <span className={styles.projectName}>Unassigned</span>
@@ -74,7 +74,7 @@ function UnassignedNavItem({ onViewChange }) {
   )
 }
 
-export function Sidebar({ activeView, onViewChange, projects = [], onExport, isOpen, onClose }) {
+export function Sidebar({ activeView, onViewChange, onProjectJump, projects = [], onExport, isOpen, onClose }) {
   const regularProjects = [...projects]
     .filter(p => p.name !== 'App Ideas')
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
@@ -105,17 +105,17 @@ export function Sidebar({ activeView, onViewChange, projects = [], onExport, isO
             </button>
             <ul className={styles.projectList}>
               {regularProjects.map(p => (
-                <ProjectNavItem key={p.id} project={p} onViewChange={onViewChange} />
+                <ProjectNavItem key={p.id} project={p} onProjectJump={onProjectJump} />
               ))}
               {appIdeasProject && (
                 <ProjectNavItem
                   key={appIdeasProject.id}
                   project={appIdeasProject}
-                  onViewChange={onViewChange}
+                  onProjectJump={onProjectJump}
                   utility
                 />
               )}
-              <UnassignedNavItem onViewChange={onViewChange} />
+              <UnassignedNavItem onProjectJump={onProjectJump} />
             </ul>
           </li>
         </ul>

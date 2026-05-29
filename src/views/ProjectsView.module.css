@@ -147,3 +147,14 @@
   font-style: italic;
   padding-left: 0.625rem;
 }
+
+@keyframes groupHighlight {
+  0%   { background: #eff6ff; }
+  70%  { background: #eff6ff; }
+  100% { background: transparent; }
+}
+
+.highlighted {
+  animation: groupHighlight 1.5s ease-out forwards;
+  border-radius: 4px;
+}

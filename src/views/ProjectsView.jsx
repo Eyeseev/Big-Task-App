@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ViewShell } from '../components/ViewShell'
 import { TaskCard } from '../components/TaskCard'
 import { Modal } from '../components/Modal'
@@ -24,11 +24,24 @@ function writeCollapsedProjects(set) {
   } catch {}
 }
 
-export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask, toggleComplete, addProject, updateProject, deleteProject, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask }) {
+export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask, toggleComplete, addProject, updateProject, deleteProject, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask, scrollToProjectId, onScrollHandled }) {
   const [showCompleted, setShowCompleted] = useState(false)
   const [taskModal, setTaskModal] = useState(null)
   const [editingProject, setEditingProject] = useState(null)
   const [collapsedProjects, setCollapsedProjects] = useState(readCollapsedProjects)
+  const groupRefs = useRef({})
+  const [highlightedId, setHighlightedId] = useState(null)
+
+  useEffect(() => {
+    if (!scrollToProjectId) return
+    const el = groupRefs.current[scrollToProjectId]
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    setHighlightedId(scrollToProjectId)
+    onScrollHandled?.()
+    const t = setTimeout(() => setHighlightedId(null), 1500)
+    return () => clearTimeout(t)
+  }, [scrollToProjectId, onScrollHandled])
 
   function toggleProjectCollapsed(key) {
     setCollapsedProjects(prev => {
@@ -119,8 +132,8 @@ export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask,
           const isCollapsed = collapsedProjects.has(project.id)
 
           return (
-            <div key={project.id} className={styles.group}>
-              <div className={styles.groupHeader} style={{ borderLeftColor: project.color }}>
+            <div key={project.id} className={styles.group} ref={el => { groupRefs.current[project.id] = el }}>
+              <div className={`${styles.groupHeader} ${highlightedId === project.id ? styles.highlighted : ''}`} style={{ borderLeftColor: project.color }}>
                 <button
                   className={styles.collapseBtn}
                   onClick={() => toggleProjectCollapsed(project.id)}
@@ -193,8 +206,8 @@ export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask,
         {(() => {
           const isCollapsed = collapsedProjects.has('unassigned')
           return (
-            <div className={styles.group}>
-              <div className={`${styles.groupHeader} ${styles.unassigned}`}>
+            <div className={styles.group} ref={el => { groupRefs.current['unassigned'] = el }}>
+              <div className={`${styles.groupHeader} ${styles.unassigned} ${highlightedId === 'unassigned' ? styles.highlighted : ''}`}>
                 <button
                   className={styles.collapseBtn}
                   onClick={() => toggleProjectCollapsed('unassigned')}

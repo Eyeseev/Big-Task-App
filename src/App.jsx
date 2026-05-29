@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerWithin } from '@dnd-kit/core'
 import styles from './App.module.css'
 import { Sidebar } from './components/Sidebar'
@@ -30,6 +30,7 @@ function App({ userId }) {
   const [activeView, setActiveView] = useState(loadActiveView)
   const [draggingTask, setDraggingTask] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [scrollToProjectId, setScrollToProjectId] = useState(null)
 
   const {
     data,
@@ -66,6 +67,16 @@ function App({ userId }) {
     try { localStorage.setItem(VIEW_KEY, view) } catch {}
     upsertUiState(userId, { activeView: view }).catch(console.error)
   }
+
+  function handleProjectJump(projectId) {
+    setActiveView('projects')
+    setSidebarOpen(false)
+    setScrollToProjectId(projectId)
+    try { localStorage.setItem(VIEW_KEY, 'projects') } catch {}
+    upsertUiState(userId, { activeView: 'projects' }).catch(console.error)
+  }
+
+  const handleScrollHandled = useCallback(() => setScrollToProjectId(null), [])
 
   function handleDragStart(event) {
     const task = tasks.find(t => t.id === event.active.id)
@@ -108,7 +119,7 @@ function App({ userId }) {
       case 'waiting':   return <WaitingView {...sharedProps} />
       case 'someday':   return <SomedayView {...sharedProps} />
       case 'backlog':   return <BacklogView {...sharedProps} />
-      case 'projects':  return <ProjectsView {...sharedProps} />
+      case 'projects':  return <ProjectsView {...sharedProps} scrollToProjectId={scrollToProjectId} onScrollHandled={handleScrollHandled} />
       default:          return <TodayView {...sharedProps} />
     }
   }
@@ -119,6 +130,7 @@ function App({ userId }) {
         <Sidebar
           activeView={activeView}
           onViewChange={handleViewChange}
+          onProjectJump={handleProjectJump}
           projects={projects}
           onExport={handleExport}
           isOpen={sidebarOpen}
