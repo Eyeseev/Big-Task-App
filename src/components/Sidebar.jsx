@@ -3,12 +3,15 @@ import { supabase } from '../data/supabaseClient'
 import styles from './Sidebar.module.css'
 
 const STATUS_NAV_ITEMS = [
-  { id: 'today',   label: 'Today' },
-  { id: 'next',    label: 'Next' },
-  { id: 'waiting', label: 'Waiting' },
-  { id: 'backlog', label: 'Later' },
-  { id: 'someday', label: 'Someday' },
+  { id: 'capture',   label: 'Capture' },
+  { id: 'today',     label: 'Today' },
+  { id: 'next',      label: 'Next' },
+  { id: 'waiting',   label: 'Waiting' },
+  { id: 'backlog',   label: 'Later' },
+  { id: 'someday',   label: 'Someday' },
 ]
+
+const APP_IDEAS_ITEM = { id: 'app_ideas', label: 'App Ideas' }
 
 function StatusNavItem({ item, active, onViewChange }) {
   const { setNodeRef, isOver } = useDroppable({
@@ -108,6 +111,11 @@ export function Sidebar({ activeView, onViewChange, projects = [], onExport, isO
               <UnassignedNavItem onViewChange={onViewChange} />
             </ul>
           </li>
+          <StatusNavItem
+            item={APP_IDEAS_ITEM}
+            active={activeView === 'app_ideas'}
+            onViewChange={onViewChange}
+          />
         </ul>
         <div className={styles.footer}>
           {onExport && (

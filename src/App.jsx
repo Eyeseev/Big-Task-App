@@ -12,8 +12,10 @@ import { WaitingView } from './views/WaitingView'
 import { SomedayView } from './views/SomedayView'
 import { BacklogView } from './views/BacklogView'
 import { ProjectsView } from './views/ProjectsView'
+import { CaptureView } from './views/CaptureView'
+import { AppIdeasView } from './views/AppIdeasView'
 
-const VALID_VIEWS = new Set(['today', 'next', 'waiting', 'someday', 'projects', 'backlog'])
+const VALID_VIEWS = new Set(['capture', 'today', 'next', 'waiting', 'someday', 'projects', 'backlog', 'app_ideas'])
 const VIEW_KEY = 'vic-rod-tasks-app-active-view'
 
 function loadActiveView() {
@@ -101,13 +103,15 @@ function App({ userId }) {
 
   function renderView() {
     switch (activeView) {
-      case 'today':    return <TodayView {...sharedProps} />
-      case 'next':     return <NextView {...sharedProps} />
-      case 'waiting':  return <WaitingView {...sharedProps} />
-      case 'someday':  return <SomedayView {...sharedProps} />
-      case 'backlog':  return <BacklogView {...sharedProps} />
-      case 'projects': return <ProjectsView {...sharedProps} />
-      default:         return <TodayView {...sharedProps} />
+      case 'capture':   return <CaptureView {...sharedProps} />
+      case 'today':     return <TodayView {...sharedProps} />
+      case 'next':      return <NextView {...sharedProps} />
+      case 'waiting':   return <WaitingView {...sharedProps} />
+      case 'someday':   return <SomedayView {...sharedProps} />
+      case 'backlog':   return <BacklogView {...sharedProps} />
+      case 'projects':  return <ProjectsView {...sharedProps} />
+      case 'app_ideas': return <AppIdeasView {...sharedProps} />
+      default:          return <TodayView {...sharedProps} />
     }
   }
 
