@@ -1,0 +1,177 @@
+.card {
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: box-shadow 0.1s;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+.completedCard {
+  opacity: 0.55;
+}
+
+.dragging {
+  opacity: 0;
+}
+
+.cardMain {
+  display: flex;
+  align-items: center;
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  padding: 0 0.125rem 0 0.5rem;
+  align-self: stretch;
+  flex-shrink: 0;
+  cursor: grab;
+  color: #d4d4d8;
+  font-size: 0.9rem;
+  user-select: none;
+  transition: color 0.1s;
+}
+
+.dragHandle:hover {
+  color: #a1a1aa;
+}
+
+.dragHandle:active {
+  cursor: grabbing;
+}
+
+.subtaskToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #a1a1aa;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background 0.1s, color 0.1s;
+}
+
+.subtaskToggle:hover {
+  background: #f4f4f5;
+  color: #3f3f46;
+}
+
+.subtaskToggleOpen {
+  color: #3b82f6;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  padding: 0 0.25rem 0 0.375rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.checkbox {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.priorityBar {
+  width: 4px;
+  align-self: stretch;
+  flex-shrink: 0;
+  margin-left: 0.375rem;
+}
+
+.body {
+  flex: 1;
+  padding: 0.75rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.text {
+  font-size: 0.9375rem;
+  color: #18181b;
+  line-height: 1.4;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.priority {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.statusBadge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: #f4f4f5;
+  color: #71717a;
+}
+
+.subtaskPill {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 9999px;
+  background: #eff6ff;
+  color: #3b82f6;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.625rem;
+  flex-shrink: 0;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+  color: #71717a;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.actionBtn:hover {
+  background: #f4f4f5;
+  color: #3f3f46;
+}
+
+.deleteBtn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}

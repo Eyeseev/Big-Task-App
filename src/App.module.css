@@ -1,0 +1,101 @@
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  background: #f9fafb;
+  min-width: 0;
+}
+
+.mobileHeader {
+  display: none;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 4px;
+}
+
+.hamburger:hover {
+  background: #e4e4e7;
+}
+
+.hamburgerLine {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #3f3f46;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+  .mobileHeader {
+    display: flex;
+    align-items: center;
+    padding: 0.625rem 1rem;
+    background: #f9fafb;
+    border-bottom: 1px solid #e4e4e7;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #71717a;
+  font-size: 0.875rem;
+}
+
+.errorBanner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 0.8125rem;
+  padding: 0.625rem 1rem;
+  margin: 1rem 1.5rem 0;
+}
+
+.saveError {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 6px;
+  color: #ea580c;
+  font-size: 0.8125rem;
+  padding: 0.625rem 1rem;
+  margin: 1rem 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .errorBanner,
+  .saveError {
+    margin: 0.75rem 1rem 0;
+  }
+}
+
+.dragOverlay {
+  background: #ffffff;
+  border: 1px solid #3b82f6;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9375rem;
+  color: #18181b;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  max-width: 420px;
+  cursor: grabbing;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

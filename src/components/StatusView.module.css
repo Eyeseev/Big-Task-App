@@ -1,0 +1,46 @@
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.addBtn {
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.addBtn:hover {
+  background: #2563eb;
+}
+
+.toggleBtn {
+  background: none;
+  border: 1px solid #e4e4e7;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8125rem;
+  color: #71717a;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.toggleBtn:hover {
+  background: #f4f4f5;
+  color: #3f3f46;
+}
+
+.empty {
+  font-size: 0.875rem;
+  color: #a1a1aa;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
