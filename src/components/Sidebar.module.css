@@ -132,6 +132,11 @@
   background: rgba(59, 130, 246, 0.12) !important;
 }
 
+.utilityProjectBtn {
+  color: #52525b;
+  font-style: italic;
+}
+
 .unassignedBtn {
   color: #52525b;
   font-style: italic;

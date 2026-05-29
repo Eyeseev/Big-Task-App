@@ -30,7 +30,7 @@ function StatusNavItem({ item, active, onViewChange }) {
   )
 }
 
-function ProjectNavItem({ project, onViewChange }) {
+function ProjectNavItem({ project, onViewChange, utility = false }) {
   const { setNodeRef, isOver } = useDroppable({
     id: `project-${project.id}`,
     data: { type: 'project', projectId: project.id },
@@ -40,7 +40,7 @@ function ProjectNavItem({ project, onViewChange }) {
     <li>
       <button
         ref={setNodeRef}
-        className={`${styles.projectBtn} ${isOver ? styles.projectDropTarget : ''}`}
+        className={`${styles.projectBtn} ${utility ? styles.utilityProjectBtn : ''} ${isOver ? styles.projectDropTarget : ''}`}
         onClick={() => onViewChange('projects')}
         title={project.name}
       >
@@ -75,9 +75,10 @@ function UnassignedNavItem({ onViewChange }) {
 }
 
 export function Sidebar({ activeView, onViewChange, projects = [], onExport, isOpen, onClose }) {
-  const sortedProjects = [...projects].sort((a, b) =>
-    a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
-  )
+  const regularProjects = [...projects]
+    .filter(p => p.name !== 'App Ideas')
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
+  const appIdeasProject = projects.find(p => p.name === 'App Ideas') ?? null
 
   return (
     <>
@@ -103,9 +104,17 @@ export function Sidebar({ activeView, onViewChange, projects = [], onExport, isO
               Projects
             </button>
             <ul className={styles.projectList}>
-              {sortedProjects.map(p => (
+              {regularProjects.map(p => (
                 <ProjectNavItem key={p.id} project={p} onViewChange={onViewChange} />
               ))}
+              {appIdeasProject && (
+                <ProjectNavItem
+                  key={appIdeasProject.id}
+                  project={appIdeasProject}
+                  onViewChange={onViewChange}
+                  utility
+                />
+              )}
               <UnassignedNavItem onViewChange={onViewChange} />
             </ul>
           </li>
