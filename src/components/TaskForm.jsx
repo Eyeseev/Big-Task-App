@@ -11,6 +11,7 @@ const STATUSES = [
   { value: 'capture', label: 'Capture' },
   { value: 'today',   label: 'Today' },
   { value: 'next',    label: 'Next' },
+  { value: 'soon',    label: 'Soon' },
   { value: 'waiting', label: 'Waiting' },
   { value: 'someday', label: 'Someday' },
   { value: 'backlog', label: 'Later' },

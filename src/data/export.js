@@ -1,8 +1,9 @@
-const STATUS_ORDER = ['capture', 'today', 'next', 'waiting', 'someday', 'backlog']
+const STATUS_ORDER = ['capture', 'today', 'next', 'soon', 'waiting', 'someday', 'backlog']
 
 const STATUS_LABELS = {
   capture: 'Capture',
   today:   'Today',
+  soon:    'Soon',
   next:    'Next',
   waiting: 'Waiting',
   someday: 'Someday',

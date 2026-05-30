@@ -7,6 +7,7 @@ import { downloadMarkdown } from './data/export'
 import { upsertUiState } from './data/supabaseApi'
 import { ImportBanner } from './components/ImportBanner'
 import { TodayView } from './views/TodayView'
+import { SoonView } from './views/SoonView'
 import { NextView } from './views/NextView'
 import { WaitingView } from './views/WaitingView'
 import { SomedayView } from './views/SomedayView'
@@ -14,7 +15,7 @@ import { BacklogView } from './views/BacklogView'
 import { ProjectsView } from './views/ProjectsView'
 import { CaptureView } from './views/CaptureView'
 
-const VALID_VIEWS = new Set(['capture', 'today', 'next', 'waiting', 'someday', 'projects', 'backlog'])
+const VALID_VIEWS = new Set(['capture', 'today', 'soon', 'next', 'waiting', 'someday', 'projects', 'backlog'])
 const VIEW_KEY = 'vic-rod-tasks-app-active-view'
 
 function loadActiveView() {
@@ -115,6 +116,7 @@ function App({ userId }) {
     switch (activeView) {
       case 'capture':   return <CaptureView {...sharedProps} />
       case 'today':     return <TodayView {...sharedProps} />
+      case 'soon':      return <SoonView {...sharedProps} />
       case 'next':      return <NextView {...sharedProps} />
       case 'waiting':   return <WaitingView {...sharedProps} />
       case 'someday':   return <SomedayView {...sharedProps} />

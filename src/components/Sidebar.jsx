@@ -6,6 +6,7 @@ const STATUS_NAV_ITEMS = [
   { id: 'capture',   label: 'Capture' },
   { id: 'today',     label: 'Today' },
   { id: 'next',      label: 'Next' },
+  { id: 'soon',      label: 'Soon' },
   { id: 'waiting',   label: 'Waiting' },
   { id: 'backlog',   label: 'Later' },
   { id: 'someday',   label: 'Someday' },

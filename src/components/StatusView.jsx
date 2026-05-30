@@ -9,6 +9,7 @@ import { sortTasks } from '../data/schema'
 const EMPTY_MESSAGES = {
   capture: 'Nothing captured yet.',
   today:   'Nothing due today.',
+  soon:    'Nothing coming soon.',
   next:    'No next tasks.',
   waiting: 'Nothing waiting right now.',
   someday: 'No someday ideas yet.',
