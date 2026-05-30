@@ -3,6 +3,7 @@ import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors, pointerW
 import styles from './App.module.css'
 import { Sidebar } from './components/Sidebar'
 import { useAppData } from './hooks/useAppData'
+import { useScrollRestore } from './hooks/useScrollRestore'
 import { downloadMarkdown } from './data/export'
 import { upsertUiState } from './data/supabaseApi'
 import { ImportBanner } from './components/ImportBanner'
@@ -56,6 +57,8 @@ function App({ userId }) {
   } = useAppData(userId)
 
   const { tasks, projects } = data
+
+  useScrollRestore(activeView, loading)
 
   // Apply active view from Supabase once after initial load completes.
   // A ref prevents re-applying on subsequent renders (e.g. after user changes view).
