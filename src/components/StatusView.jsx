@@ -15,7 +15,7 @@ const EMPTY_MESSAGES = {
   backlog: 'Nothing parked for later.',
 }
 
-export function StatusView({ status, title, tasks, projects, addTask, updateTask, deleteTask, toggleComplete, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask }) {
+export function StatusView({ status, title, tasks, projects, addTask, updateTask, deleteTask, toggleComplete, togglePin, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask }) {
   const [showCompleted, setShowCompleted] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
@@ -95,6 +95,7 @@ export function StatusView({ status, title, tasks, projects, addTask, updateTask
             onDeleteSubtask={(subId) => deleteSubtask(task.id, subId)}
             onToggleSubtaskComplete={(subId) => toggleSubtaskComplete(task.id, subId)}
             onPromoteSubtask={(subId) => promoteSubtask(task.id, subId)}
+            onTogglePin={() => togglePin(task.id)}
           />
         ))}
       </ViewShell>

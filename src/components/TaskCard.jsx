@@ -23,6 +23,7 @@ export function TaskCard({
   task, project, showStatus = false,
   onToggleComplete, onEdit, onDelete,
   onAddSubtask, onDeleteSubtask, onToggleSubtaskComplete, onPromoteSubtask,
+  onTogglePin,
 }) {
   const subtasks = task.subtasks ?? []
   const completedSubtaskCount = subtasks.filter(s => s.completed).length
@@ -43,7 +44,7 @@ export function TaskCard({
   return (
     <div
       ref={setNodeRef}
-      className={`${styles.card} ${task.completed ? styles.completedCard : ''} ${isDragging ? styles.dragging : ''}`}
+      className={`${styles.card} ${task.completed ? styles.completedCard : ''} ${isDragging ? styles.dragging : ''} ${task.pinned ? styles.pinnedCard : ''}`}
     >
       <div className={styles.cardMain}>
         <div className={styles.dragHandle} {...listeners} {...attributes} aria-label="Drag task">
@@ -103,6 +104,16 @@ export function TaskCard({
           </div>
         </div>
         <div className={styles.actions}>
+          {onTogglePin && (
+            <button
+              className={`${styles.actionBtn} ${task.pinned ? styles.pinBtnActive : ''}`}
+              onClick={onTogglePin}
+              aria-label={task.pinned ? 'Unpin task' : 'Pin to top'}
+              title={task.pinned ? 'Unpin' : 'Pin to top'}
+            >
+              📌
+            </button>
+          )}
           {onEdit && (
             <button className={styles.actionBtn} onClick={onEdit} aria-label="Edit task">
               Edit

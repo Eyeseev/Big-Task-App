@@ -74,6 +74,7 @@ export function useAppData(userId) {
       priority: fields.priority ?? 'medium',
       status: fields.status ?? 'today',
       projectId: fields.projectId ?? null,
+      pinned: false,
       subtasks: [],
       createdAt: n,
       updatedAt: n,
@@ -112,6 +113,19 @@ export function useAppData(userId) {
       ),
     }))
     api.updateTask(userId, id, { completed, completedAt }).catch(handleSaveError)
+  }
+
+  function togglePin(id) {
+    const task = data.tasks.find(t => t.id === id)
+    if (!task) return
+    const pinned = !task.pinned
+    setData(d => ({
+      ...d,
+      tasks: d.tasks.map(t =>
+        t.id === id ? { ...t, pinned, updatedAt: now() } : t
+      ),
+    }))
+    api.updateTask(userId, id, { pinned }).catch(handleSaveError)
   }
 
   // ---- projects ----
@@ -243,7 +257,7 @@ export function useAppData(userId) {
     loadError,
     saveError,
     uiState,
-    addTask, updateTask, deleteTask, toggleComplete,
+    addTask, updateTask, deleteTask, toggleComplete, togglePin,
     addProject, updateProject, deleteProject,
     addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask,
   }

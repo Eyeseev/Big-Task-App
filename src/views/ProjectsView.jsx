@@ -24,7 +24,7 @@ function writeCollapsedProjects(set) {
   } catch {}
 }
 
-export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask, toggleComplete, addProject, updateProject, deleteProject, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask, scrollToProjectId, onScrollHandled }) {
+export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask, toggleComplete, togglePin, addProject, updateProject, deleteProject, addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask, scrollToProjectId, onScrollHandled }) {
   const [showCompleted, setShowCompleted] = useState(false)
   const [taskModal, setTaskModal] = useState(null)
   const [editingProject, setEditingProject] = useState(null)
@@ -194,6 +194,7 @@ export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask,
                       onDeleteSubtask={(subId) => deleteSubtask(task.id, subId)}
                       onToggleSubtaskComplete={(subId) => toggleSubtaskComplete(task.id, subId)}
                       onPromoteSubtask={(subId) => promoteSubtask(task.id, subId)}
+                      onTogglePin={() => togglePin(task.id)}
                     />
                   ))
                 )
@@ -253,6 +254,7 @@ export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask,
                       onDeleteSubtask={(subId) => deleteSubtask(task.id, subId)}
                       onToggleSubtaskComplete={(subId) => toggleSubtaskComplete(task.id, subId)}
                       onPromoteSubtask={(subId) => promoteSubtask(task.id, subId)}
+                      onTogglePin={() => togglePin(task.id)}
                     />
                   ))
                 )

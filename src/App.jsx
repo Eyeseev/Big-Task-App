@@ -38,7 +38,7 @@ function App({ userId }) {
     loadError,
     saveError,
     uiState,
-    addTask, updateTask, deleteTask, toggleComplete,
+    addTask, updateTask, deleteTask, toggleComplete, togglePin,
     addProject, updateProject, deleteProject,
     addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask,
   } = useAppData(userId)
@@ -106,7 +106,7 @@ function App({ userId }) {
 
   const sharedProps = {
     tasks, projects,
-    addTask, updateTask, deleteTask, toggleComplete,
+    addTask, updateTask, deleteTask, toggleComplete, togglePin,
     addProject, updateProject, deleteProject,
     addSubtask, deleteSubtask, toggleSubtaskComplete, promoteSubtask,
   }

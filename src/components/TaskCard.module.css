@@ -175,3 +175,16 @@
   background: #fee2e2;
   color: #dc2626;
 }
+
+.pinnedCard {
+  border-top: 2px solid #f59e0b;
+}
+
+.pinBtnActive {
+  color: #f59e0b;
+}
+
+.pinBtnActive:hover {
+  background: #fef3c7;
+  color: #d97706;
+}

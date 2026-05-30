@@ -34,6 +34,7 @@ function taskFromDb(row) {
     priority: row.priority,
     status: row.status,
     projectId: row.project_id,
+    pinned: row.pinned ?? false,
     subtasks: row.subtasks ?? [],
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -50,6 +51,7 @@ function taskToDb(task, userId) {
     priority: task.priority,
     status: task.status,
     project_id: task.projectId ?? null,
+    pinned: task.pinned ?? false,
     subtasks: task.subtasks ?? [],
     created_at: task.createdAt,
     updated_at: task.updatedAt,
@@ -124,6 +126,7 @@ export async function updateTask(userId, id, changes) {
   if ('priority' in changes) row.priority = changes.priority
   if ('status' in changes) row.status = changes.status
   if ('projectId' in changes) row.project_id = changes.projectId
+  if ('pinned' in changes) row.pinned = changes.pinned
   if ('subtasks' in changes) row.subtasks = changes.subtasks
   const { error } = await supabase
     .from('tasks')

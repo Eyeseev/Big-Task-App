@@ -36,7 +36,8 @@ export function buildMarkdown(tasks, projects) {
         const check = task.completed ? '[x]' : '[ ]'
         const project = task.projectId ? projectMap[task.projectId] : null
         const projectPart = project ? ` — Project: ${project.name}` : ''
-        lines.push(`- ${check} ${task.text} — ${cap(task.priority)}${projectPart}`)
+        const pinnedPart = task.pinned ? ' 📌' : ''
+        lines.push(`- ${check} ${task.text}${pinnedPart} — ${cap(task.priority)}${projectPart}`)
         lines.push(...subtaskLines(task.subtasks))
       }
       lines.push('')
@@ -60,7 +61,8 @@ export function buildMarkdown(tasks, projects) {
       for (const task of projectTasks) {
         const check = task.completed ? '[x]' : '[ ]'
         const statusLabel = STATUS_LABELS[task.status] ?? task.status
-        lines.push(`- ${check} ${task.text} — ${statusLabel} — ${cap(task.priority)}`)
+        const pinnedPart = task.pinned ? ' 📌' : ''
+        lines.push(`- ${check} ${task.text}${pinnedPart} — ${statusLabel} — ${cap(task.priority)}`)
         lines.push(...subtaskLines(task.subtasks))
       }
     }
@@ -74,7 +76,8 @@ export function buildMarkdown(tasks, projects) {
     for (const task of unassigned) {
       const check = task.completed ? '[x]' : '[ ]'
       const statusLabel = STATUS_LABELS[task.status] ?? task.status
-      lines.push(`- ${check} ${task.text} — ${statusLabel} — ${cap(task.priority)}`)
+      const pinnedPart = task.pinned ? ' 📌' : ''
+      lines.push(`- ${check} ${task.text}${pinnedPart} — ${statusLabel} — ${cap(task.priority)}`)
       lines.push(...subtaskLines(task.subtasks))
     }
     lines.push('')

@@ -82,9 +82,11 @@ export function TaskForm({ initialValues, onSubmit, onCancel, projects = [] }) {
           onChange={e => setProjectId(e.target.value || null)}
         >
           <option value="">None</option>
-          {projects.map(p => (
-            <option key={p.id} value={p.id}>{p.name}</option>
-          ))}
+          {[...projects]
+            .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
+            .map(p => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
         </select>
       </label>
 

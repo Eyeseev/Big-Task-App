@@ -17,6 +17,8 @@ const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 }
 
 export function sortTasks(tasks) {
   return [...tasks].sort((a, b) => {
+    const pinDiff = (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)
+    if (pinDiff !== 0) return pinDiff
     const pd = PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]
     if (pd !== 0) return pd
     return a.text.localeCompare(b.text, undefined, { sensitivity: 'base' })
