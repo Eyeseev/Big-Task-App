@@ -18,8 +18,19 @@ import { CaptureView } from './views/CaptureView'
 const VALID_VIEWS = new Set(['capture', 'today', 'soon', 'next', 'waiting', 'someday', 'projects', 'backlog'])
 const VIEW_KEY = 'vic-rod-tasks-app-active-view'
 
+function getUrlView() {
+  try {
+    const v = new URLSearchParams(window.location.search).get('view')
+    return v && VALID_VIEWS.has(v) ? v : null
+  } catch {
+    return null
+  }
+}
+
 function loadActiveView() {
   try {
+    const urlView = getUrlView()
+    if (urlView) return urlView
     const stored = localStorage.getItem(VIEW_KEY)
     return stored && VALID_VIEWS.has(stored) ? stored : 'today'
   } catch {
@@ -48,13 +59,23 @@ function App({ userId }) {
 
   // Apply active view from Supabase once after initial load completes.
   // A ref prevents re-applying on subsequent renders (e.g. after user changes view).
+  // Set URL on first render if it has no ?view= param yet
+  useEffect(() => {
+    if (!getUrlView()) {
+      window.history.replaceState(null, '', `?view=${activeView}`)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const uiStateApplied = useRef(false)
   useEffect(() => {
     if (loading || uiStateApplied.current) return
     uiStateApplied.current = true
+    // If the URL already has a valid view (e.g. from a refresh), respect it
+    if (getUrlView()) return
     if (uiState?.activeView && VALID_VIEWS.has(uiState.activeView)) {
       setActiveView(uiState.activeView)
       try { localStorage.setItem(VIEW_KEY, uiState.activeView) } catch {}
+      window.history.replaceState(null, '', `?view=${uiState.activeView}`)
     }
   }, [loading, uiState])
 
@@ -66,6 +87,7 @@ function App({ userId }) {
     setActiveView(view)
     setSidebarOpen(false)
     try { localStorage.setItem(VIEW_KEY, view) } catch {}
+    window.history.replaceState(null, '', `?view=${view}`)
     upsertUiState(userId, { activeView: view }).catch(console.error)
   }
 
@@ -74,6 +96,7 @@ function App({ userId }) {
     setSidebarOpen(false)
     setScrollToProjectId(projectId)
     try { localStorage.setItem(VIEW_KEY, 'projects') } catch {}
+    window.history.replaceState(null, '', `?view=projects`)
     upsertUiState(userId, { activeView: 'projects' }).catch(console.error)
   }
 
