@@ -7,6 +7,7 @@ import { useScrollRestore } from './hooks/useScrollRestore'
 import { downloadMarkdown } from './data/export'
 import { upsertUiState } from './data/supabaseApi'
 import { ImportBanner } from './components/ImportBanner'
+import { BackToTopButton } from './components/BackToTopButton'
 import { TodayView } from './views/TodayView'
 import { SoonView } from './views/SoonView'
 import { NextView } from './views/NextView'
@@ -188,6 +189,7 @@ function App({ userId }) {
           {renderView()}
         </main>
       </div>
+      <BackToTopButton />
       <DragOverlay dropAnimation={null}>
         {draggingTask && (
           <div className={styles.dragOverlay}>

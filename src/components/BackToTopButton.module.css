@@ -1,0 +1,74 @@
+.btn {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  z-index: 40;
+
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 9999px;
+
+  background: #ffffff;
+  color: #18181b;
+  border: 1px solid #d4d4d8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1;
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.btn:hover {
+  background: #f4f4f5;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
+.btn:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+.arrow {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Mobile: shrink to a circle with just the arrow */
+@media (max-width: 768px) {
+  .btn {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    padding: 0.625rem;
+    border-radius: 9999px;
+    gap: 0;
+  }
+
+  .label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
+}
