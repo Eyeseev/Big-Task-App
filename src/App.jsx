@@ -161,6 +161,7 @@ function App({ userId }) {
           onViewChange={handleViewChange}
           onProjectJump={handleProjectJump}
           projects={projects}
+          tasks={tasks}
           onExport={handleExport}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}

@@ -12,7 +12,7 @@ const STATUS_NAV_ITEMS = [
   { id: 'someday',   label: 'Someday' },
 ]
 
-function StatusNavItem({ item, active, onViewChange }) {
+function StatusNavItem({ item, active, onViewChange, count = 0 }) {
   const { setNodeRef, isOver } = useDroppable({
     id: `status-${item.id}`,
     data: { type: 'status', status: item.id },
@@ -26,6 +26,7 @@ function StatusNavItem({ item, active, onViewChange }) {
         onClick={() => onViewChange(item.id)}
       >
         {item.label}
+        {count > 0 && <span className={styles.navCount}>{count}</span>}
       </button>
     </li>
   )
@@ -75,7 +76,8 @@ function UnassignedNavItem({ onProjectJump }) {
   )
 }
 
-export function Sidebar({ activeView, onViewChange, onProjectJump, projects = [], onExport, isOpen, onClose }) {
+export function Sidebar({ activeView, onViewChange, onProjectJump, projects = [], tasks = [], onExport, isOpen, onClose }) {
+  const captureCount = tasks.filter(t => t.status === 'capture' && !t.completed).length
   const regularProjects = [...projects]
     .filter(p => p.name !== 'App Ideas')
     .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }))
@@ -95,6 +97,7 @@ export function Sidebar({ activeView, onViewChange, onProjectJump, projects = []
               item={item}
               active={activeView === item.id}
               onViewChange={onViewChange}
+              count={item.id === 'capture' ? captureCount : 0}
             />
           ))}
           <li>
