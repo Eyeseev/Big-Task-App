@@ -11,6 +11,7 @@ export const PRESET_COLORS = [
   { name: 'Plum',   value: '#a855f7' },
   { name: 'Sky',    value: '#0ea5e9' },
   { name: 'Slate',  value: '#64748b' },
+  { name: 'Pink',   value: '#ec4899' },
 ]
 
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 }
