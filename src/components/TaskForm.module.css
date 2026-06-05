@@ -21,6 +21,25 @@
   color: #52525b;
 }
 
+.textarea {
+  font-size: 0.875rem;
+  color: #18181b;
+  background: #f9fafb;
+  border: 1px solid #e4e4e7;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+  font-family: inherit;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.textarea:focus {
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
 .input,
 .select {
   font-size: 0.9375rem;

@@ -1,4 +1,4 @@
-import { useState, useLayoutEffect } from 'react'
+import { useState, useLayoutEffect, Fragment } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import styles from './TaskCard.module.css'
 import { ProjectBadge } from './ProjectBadge'
@@ -20,6 +20,57 @@ const STATUS_LABELS = {
   backlog: 'Later',
 }
 
+// Matches (in priority order): full URLs, mailto:, emails, bare domains (e.g. google.com)
+const LINK_RE = /\b(?:https?:\/\/[^\s<>"']*|mailto:[^\s<>"']*|[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}|[a-zA-Z0-9\-]{2,}(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/[^\s<>"']*)?)/g
+
+function renderLine(line, lineIdx, linkClass) {
+  const re = new RegExp(LINK_RE.source, 'g')
+  const result = []
+  let lastIndex = 0
+  let match
+
+  while ((match = re.exec(line)) !== null) {
+    if (match.index > lastIndex) result.push(line.slice(lastIndex, match.index))
+
+    // Strip trailing punctuation from the match before linkifying
+    const raw = match[0]
+    const text = raw.replace(/[.,;:!?)\]]+$/, '')
+    const trail = raw.slice(text.length)
+
+    const href = /^https?:\/\//.test(text)
+      ? text
+      : /^mailto:/.test(text)
+        ? text
+        : text.includes('@')
+          ? `mailto:${text}`
+          : `https://${text}`
+
+    result.push(
+      <a key={`${lineIdx}-${match.index}`} href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+        {text}
+      </a>
+    )
+    if (trail) result.push(trail)
+    lastIndex = match.index + raw.length
+  }
+
+  if (lastIndex < line.length) result.push(line.slice(lastIndex))
+  return result
+}
+
+function renderDescription(text, maxLines, linkClass) {
+  const lines = text.split('\n')
+  const visible = maxLines != null ? lines.slice(0, maxLines) : lines
+  return visible.map((line, idx) => (
+    <Fragment key={idx}>
+      {idx > 0 && <br />}
+      {renderLine(line, idx, linkClass)}
+    </Fragment>
+  ))
+}
+
+const DESC_COLLAPSE_THRESHOLD = 3
+
 export function TaskCard({
   task, project, showStatus = false,
   onToggleComplete, onEdit, onDelete,
@@ -31,6 +82,11 @@ export function TaskCard({
   const [subtasksOpen, setSubtasksOpen] = useState(() =>
     subtasks.length > 0 && !isTaskCollapsed(task.id)
   )
+
+  const desc = task.description ?? ''
+  const descLines = desc ? desc.split('\n') : []
+  const descIsLong = descLines.length > DESC_COLLAPSE_THRESHOLD
+  const [descExpanded, setDescExpanded] = useState(false)
 
   // Safety net: correct the open state after mount in case the lazy initializer
   // ran before task.subtasks was fully hydrated (e.g. React StrictMode double-mount).
@@ -103,6 +159,21 @@ export function TaskCard({
               </span>
             )}
           </div>
+          {desc && (
+            <div className={styles.description}>
+              <span className={styles.descText}>
+                {renderDescription(desc, descIsLong && !descExpanded ? DESC_COLLAPSE_THRESHOLD : null, styles.descLink)}
+              </span>
+              {descIsLong && (
+                <button
+                  className={styles.descToggle}
+                  onClick={e => { e.stopPropagation(); setDescExpanded(v => !v) }}
+                >
+                  {descExpanded ? 'Less' : `+${descLines.length - DESC_COLLAPSE_THRESHOLD} more`}
+                </button>
+              )}
+            </div>
+          )}
         </div>
         <div className={styles.actions}>
           {onTogglePin && (

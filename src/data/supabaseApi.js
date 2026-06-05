@@ -29,6 +29,7 @@ function taskFromDb(row) {
   return {
     id: row.id,
     text: row.text,
+    description: row.description ?? '',
     completed: row.completed,
     completedAt: row.completed_at,
     priority: row.priority,
@@ -46,6 +47,7 @@ function taskToDb(task, userId) {
     id: task.id,
     user_id: userId,
     text: task.text,
+    description: task.description ?? null,
     completed: task.completed,
     completed_at: task.completedAt ?? null,
     priority: task.priority,
@@ -121,6 +123,7 @@ export async function createTask(userId, task) {
 export async function updateTask(userId, id, changes) {
   const row = { updated_at: new Date().toISOString() }
   if ('text' in changes) row.text = changes.text
+  if ('description' in changes) row.description = changes.description ?? null
   if ('completed' in changes) row.completed = changes.completed
   if ('completedAt' in changes) row.completed_at = changes.completedAt
   if ('priority' in changes) row.priority = changes.priority
@@ -205,6 +208,7 @@ export async function importLocalData(userId, localData) {
     const rows = localTasks.map(t => ({
       user_id: userId,
       text: t.text ?? '',
+      description: t.description ?? null,
       completed: t.completed ?? false,
       completed_at: t.completedAt ?? null,
       priority: VALID_PRIORITIES.has(t.priority) ? t.priority : 'medium',

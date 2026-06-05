@@ -46,6 +46,7 @@ export function newTask(overrides = {}) {
   return {
     id: generateId(),
     text: '',
+    description: '',
     completed: false,
     priority: 'medium',
     status: 'today',

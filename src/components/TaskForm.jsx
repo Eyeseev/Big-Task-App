@@ -19,6 +19,7 @@ const STATUSES = [
 
 export function TaskForm({ initialValues, onSubmit, onCancel, projects = [] }) {
   const [text, setText] = useState(initialValues?.text ?? '')
+  const [description, setDescription] = useState(initialValues?.description ?? '')
   const [priority, setPriority] = useState(initialValues?.priority ?? 'medium')
   const [status, setStatus] = useState(initialValues?.status ?? 'today')
   const [projectId, setProjectId] = useState(initialValues?.projectId ?? null)
@@ -28,7 +29,7 @@ export function TaskForm({ initialValues, onSubmit, onCancel, projects = [] }) {
   function handleSubmit(e) {
     e.preventDefault()
     if (!text.trim()) return
-    onSubmit({ text: text.trim(), priority, status, projectId })
+    onSubmit({ text: text.trim(), description: description.trim(), priority, status, projectId })
   }
 
   return (
@@ -44,6 +45,17 @@ export function TaskForm({ initialValues, onSubmit, onCancel, projects = [] }) {
           onChange={e => setText(e.target.value)}
           placeholder="What needs to be done?"
           autoFocus
+        />
+      </label>
+
+      <label className={styles.label}>
+        Description
+        <textarea
+          className={styles.textarea}
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+          placeholder="Add details, notes, links, addresses, instructions…"
+          rows={4}
         />
       </label>
 

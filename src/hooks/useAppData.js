@@ -70,6 +70,7 @@ export function useAppData(userId) {
     const task = {
       id: generateId(),
       text: fields.text,
+      description: fields.description ?? '',
       completed: false,
       priority: fields.priority ?? 'medium',
       status: fields.status ?? 'today',
