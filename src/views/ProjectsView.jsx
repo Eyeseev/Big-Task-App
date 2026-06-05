@@ -4,7 +4,7 @@ import { TaskCard } from '../components/TaskCard'
 import { Modal } from '../components/Modal'
 import { TaskForm } from '../components/TaskForm'
 import { ProjectForm } from '../components/ProjectForm'
-import { sortTasks } from '../data/schema'
+import { sortTasks, sortTasksByBucket } from '../data/schema'
 import styles from './ProjectsView.module.css'
 
 const COLLAPSED_PROJECTS_KEY = 'vic-rod-tasks-app-collapsed-projects'
@@ -126,7 +126,7 @@ export function ProjectsView({ tasks, projects, addTask, updateTask, deleteTask,
 
         {sortedProjects.map(project => {
           const _all = tasks.filter(t => t.projectId === project.id)
-          const _active = sortTasks(_all.filter(t => !t.completed))
+          const _active = sortTasksByBucket(_all.filter(t => !t.completed))
           const _completed = sortTasks(_all.filter(t => t.completed))
           const projectTasks = showCompleted ? [..._active, ..._completed] : _active
           const isCollapsed = collapsedProjects.has(project.id)

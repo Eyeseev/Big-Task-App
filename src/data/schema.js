@@ -15,8 +15,23 @@ export const PRESET_COLORS = [
 
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 }
 
+const BUCKET_ORDER = { today: 0, next: 1, soon: 2, waiting: 3, backlog: 4, someday: 5 }
+
 export function sortTasks(tasks) {
   return [...tasks].sort((a, b) => {
+    const pinDiff = (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)
+    if (pinDiff !== 0) return pinDiff
+    const pd = PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]
+    if (pd !== 0) return pd
+    return a.text.localeCompare(b.text, undefined, { sensitivity: 'base' })
+  })
+}
+
+export function sortTasksByBucket(tasks) {
+  return [...tasks].sort((a, b) => {
+    const aB = a.status != null ? (BUCKET_ORDER[a.status] ?? 6) : 6
+    const bB = b.status != null ? (BUCKET_ORDER[b.status] ?? 6) : 6
+    if (aB !== bB) return aB - bB
     const pinDiff = (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)
     if (pinDiff !== 0) return pinDiff
     const pd = PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]
