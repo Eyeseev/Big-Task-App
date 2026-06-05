@@ -14,6 +14,7 @@ const PRIORITY_COLORS = {
 const STATUS_LABELS = {
   today: 'Today',
   next: 'Next',
+  soon: 'Soon',
   waiting: 'Waiting',
   someday: 'Someday',
   backlog: 'Later',
